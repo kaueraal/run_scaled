@@ -5,6 +5,21 @@ SCALING_FACTOR=2
 USE_OPENGL="auto"
 SLEEPTIME=1
 
+print_help() {
+                echo "usage: run_scale [--scale=scaling_factor] [--opengl=auto|yes|no] [--sleep=sleeptime] application"
+                echo ""
+                echo "--scale  is set to 2 by default and has to be at least 2."
+                echo "--opengl is set to auto by default. if you get rendering errors, especially"
+                echo "         when the window is resized, try setting it to no."
+                echo "--sleep  sets how many seconds to wait after starting xpra to run the given"
+                echo "         application. it is set to 1 by default."
+}
+
+if [ $# = 0 ]
+    then print_help
+        exit 1
+fi
+
 while true
     do if [ $# -gt 0 ]
         then case $1 in
@@ -25,13 +40,7 @@ while true
                 break
             ;;
             --*)
-                echo "Usage: run_scale [--scale=SCALING_FACTOR] [--opengl=auto|yes|no] [--sleep=SLEEPTIME] application"
-                echo ""
-                echo "--scale  is set to 2 by default and has to be at least 2."
-                echo "--opengl is set to auto by default. If you get rendering errors, especially"
-                echo "         when the window is resized, try setting it to no."
-                echo "--sleep  sets how many seconds to wait after starting xpra to run the given"
-                echo "         application. It is set to 1 by default."
+                print_help
                 exit 1
             ;;
             *)
