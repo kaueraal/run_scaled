@@ -1,0 +1,14 @@
+#!/bin/bash
+
+UNSCALED_RESOLUTION=1800x900
+SCALING_FACTOR=2
+USE_OPENGL="yes"
+
+# Do not edit below here
+
+DISPLAYNUM=:`shuf -i 10000-99999999 -n 1`
+xpra start $DISPLAYNUM --xvfb="Xvfb +extension Composite -screen 0 ${UNSCALED_RESOLUTION}x24+32 -nolisten tcp -noreset  -auth \$XAUTHORITY"
+sleep 1s
+xpra attach $DISPLAYNUM --desktop-scaling=${SCALING_FACTOR} --opengl=${USE_OPENGL} &
+GDK_SCALE=1 GDK_DPI_SCALE=1 DISPLAY=$DISPLAYNUM "$@"
+xpra stop $DISPLAYNUM
