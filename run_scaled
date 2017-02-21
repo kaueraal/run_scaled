@@ -1,14 +1,56 @@
 #!/bin/bash
 
-UNSCALED_RESOLUTION=1800x900
+# Default settings
 SCALING_FACTOR=2
-USE_OPENGL="yes"
+USE_OPENGL="auto"
+SLEEPTIME=1
 
-# Do not edit below here
+while true
+    do if [ $# -gt 0 ]
+        then case $1 in
+            --scale=*)
+                SCALING_FACTOR="${1#*=}"
+                shift
+            ;;
+            --opengl=*)
+                USE_OPENGL="${1#*=}"
+                shift
+            ;;
+            --sleep=*)
+                SLEEPTIME="${1#*=}"
+                shift
+            ;;
+            --)
+                shift
+                break
+            ;;
+            --*)
+                echo "Usage: run_scale [--scale=SCALING_FACTOR] [--opengl=auto|yes|no] [--sleep=SLEEPTIME] application"
+                echo ""
+                echo "--scale  is set to 2 by default and has to be at least 2."
+                echo "--opengl is set to auto by default. If you get rendering errors, especially"
+                echo "         when the window is resized, try setting it to no."
+                echo "--sleep  sets how many seconds to wait after starting xpra to run the given"
+                echo "         application. It is set to 1 by default."
+                exit 1
+            ;;
+            *)
+                break
+            ;;
+        esac
+    else
+        echo "No application given!"
+        exit 2
+    fi
+done
+
+UNSCALED_RESOLUTION_X=`xrandr | sed -n -e 's/Screen 0:.*current \([0-9]\+\) x \([0-9]\+\).*/\1/p'`
+UNSCALED_RESOLUTION_Y=`xrandr | sed -n -e 's/Screen 0:.*current \([0-9]\+\) x \([0-9]\+\).*/\2/p'`
+UNSCALED_RESOLUTION="$(( "$UNSCALED_RESOLUTION_X" / "$SCALING_FACTOR" ))x$(( "$UNSCALED_RESOLUTION_Y" / "$SCALING_FACTOR" ))"
 
 DISPLAYNUM=:`shuf -i 10000-99999999 -n 1`
-xpra start $DISPLAYNUM --xvfb="Xvfb +extension Composite -screen 0 ${UNSCALED_RESOLUTION}x24+32 -nolisten tcp -noreset  -auth \$XAUTHORITY"
-sleep 1s
-xpra attach $DISPLAYNUM --desktop-scaling=${SCALING_FACTOR} --opengl=${USE_OPENGL} &
-GDK_SCALE=1 GDK_DPI_SCALE=1 DISPLAY=$DISPLAYNUM "$@"
-xpra stop $DISPLAYNUM
+xpra start "$DISPLAYNUM" --xvfb="Xvfb +extension Composite -screen 0 ${UNSCALED_RESOLUTION}x24+32 -nolisten tcp -noreset  -auth \$XAUTHORITY"
+sleep "$SLEEPTIME"
+xpra attach "$DISPLAYNUM" "--desktop-scaling=$SCALING_FACTOR" "--opengl=$USE_OPENGL" &
+GDK_SCALE=1 GDK_DPI_SCALE=1 DISPLAY="$DISPLAYNUM" "$@"
+xpra stop "$DISPLAYNUM"
