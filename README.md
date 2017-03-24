@@ -3,5 +3,6 @@
 Run an X application scaled via xpra.
 
 Dependencies:
-* xpra
+* xvfb
+* xpra >= 2 https://xpra.org/
 * xrandr

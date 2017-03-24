@@ -55,7 +55,11 @@ done
 
 UNSCALED_RESOLUTION_X=`xrandr | sed -n -e 's/Screen 0:.*current \([0-9]\+\) x \([0-9]\+\).*/\1/p'`
 UNSCALED_RESOLUTION_Y=`xrandr | sed -n -e 's/Screen 0:.*current \([0-9]\+\) x \([0-9]\+\).*/\2/p'`
-UNSCALED_RESOLUTION="$(( "$UNSCALED_RESOLUTION_X" / "$SCALING_FACTOR" ))x$(( "$UNSCALED_RESOLUTION_Y" / "$SCALING_FACTOR" ))"
+declare -i UNSCALED_RESOLUTION_X
+declare -i UNSCALED_RESOLUTION_Y
+declare -i SCALING_FACTOR
+
+UNSCALED_RESOLUTION="$(( $UNSCALED_RESOLUTION_X / $SCALING_FACTOR ))x$(( $UNSCALED_RESOLUTION_Y / $SCALING_FACTOR ))"
 
 DISPLAYNUM=:`shuf -i 10000-99999999 -n 1`
 xpra start "$DISPLAYNUM" --xvfb="Xvfb +extension Composite -screen 0 ${UNSCALED_RESOLUTION}x24+32 -nolisten tcp -noreset  -auth \$XAUTHORITY"
