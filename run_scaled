@@ -8,7 +8,7 @@ SLEEPTIME=1
 print_help() {
                 echo "usage: run_scale [--scale=scaling_factor] [--opengl=auto|yes|no] [--sleep=sleeptime] application"
                 echo ""
-                echo "--scale  is set to 2 by default and has to be at least 2."
+                echo "--scale  is set to 2 by default. Fractional scales are supported."
                 echo "--opengl is set to auto by default. If you get rendering errors, especially"
                 echo "         when the window is resized, try setting it to no."
                 echo "--sleep  sets how many seconds to wait after starting xpra to run the given"
