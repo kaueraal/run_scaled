@@ -6,13 +6,22 @@ USE_OPENGL="auto"
 SLEEPTIME=1
 
 print_help() {
-                echo "usage: run_scale [--scale=scaling_factor] [--opengl=auto|yes|no] [--sleep=sleeptime] application"
-                echo ""
-                echo "--scale  is set to 2 by default. Fractional scales are supported."
-                echo "--opengl is set to auto by default. If you get rendering errors, especially"
-                echo "         when the window is resized, try setting it to no."
-                echo "--sleep  sets how many seconds to wait after starting xpra to run the given"
-                echo "         application. It is set to 1 by default."
+    echo "Usage: run_scale [--scale=scaling_factor] [--opengl=auto|yes|no] [--sleep=sleeptime] application"
+    echo ""
+    echo "--scale  Sets the factor the application is scaled by. Fractional scales are"
+    echo "         supported. It is set to 2 by default."
+    echo "--opengl Sets whether xpra should use opengl for rendering. If you get rendering"
+    echo "         errors, especially when the window is resized, try setting it to no. It"
+    echo "         is set to auto by default."
+    echo "--sleep  Sets how many seconds to wait after starting xpra before attaching to"
+    echo "         the xpra session. It is set to 1 by default."
+    echo "         You might need to increase the value if your machine is particularly"
+    echo "         slow and attaching fails with a message like"
+    echo ""
+    echo "             InitException: cannot find any live servers to connect to"
+    echo "             xpra initialization error:"
+    echo "              cannot find any live servers to connect to"
+    echo ""
 }
 
 if [ $# = 0 ]
