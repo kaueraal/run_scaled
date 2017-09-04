@@ -3,7 +3,7 @@
 Run an X application scaled via xpra.
 
 ```$ ./run_scaled --help
-Usage: run_scale [--scale=scaling_factor] [--opengl=auto|yes|no] [--sleep=sleeptime] application
+Usage: run_scaled [--scale=scaling_factor] [--opengl=auto|yes|no] [--sleep=sleeptime] application
 
 --scale  Sets the factor the application is scaled by. Fractional scales are
          supported. It is set to 2 by default.
