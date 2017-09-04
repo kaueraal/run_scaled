@@ -6,7 +6,7 @@ USE_OPENGL="auto"
 SLEEPTIME=1
 
 print_help() {
-    echo "Usage: run_scale [--scale=scaling_factor] [--opengl=auto|yes|no] [--sleep=sleeptime] application"
+    echo "Usage: run_scaled [--scale=scaling_factor] [--opengl=auto|yes|no] [--sleep=sleeptime] application"
     echo ""
     echo "--scale  Sets the factor the application is scaled by. Fractional scales are"
     echo "         supported. It is set to 2 by default."
