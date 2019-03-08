@@ -7,21 +7,13 @@ SLEEPTIME=1
 PERFORMANCE_OPTIONS="--encoding=rgb --mmap=yes --compress=0"
 
 print_help() {
-    echo "Usage: run_scaled [--scale=scaling_factor] [--opengl=auto|yes|no] [--sleep=sleeptime] application"
+    echo "Usage: run_scaled [--scale=scaling_factor] [--opengl=auto|yes|no] application"
     echo ""
     echo "--scale  Sets the factor the application is scaled by. Fractional scales are"
     echo "         supported. It is set to 2 by default."
     echo "--opengl Sets whether xpra should use opengl for rendering. If you get rendering"
     echo "         errors, especially when the window is resized, try setting it to no. It"
     echo "         is set to auto by default."
-    echo "--sleep  Sets how many seconds to wait after starting xpra before attaching to"
-    echo "         the xpra session. It is set to 1 by default."
-    echo "         You might need to increase the value if your machine is particularly"
-    echo "         slow and attaching fails with a message like"
-    echo ""
-    echo "             InitException: cannot find any live servers to connect to"
-    echo "             xpra initialization error:"
-    echo "              cannot find any live servers to connect to"
     echo ""
 }
 
@@ -42,7 +34,7 @@ while true
                 shift
             ;;
             --sleep=*)
-                SLEEPTIME="${1#*=}"
+                echo "--sleep flag is deprecated"
                 shift
             ;;
             --)
@@ -73,5 +65,7 @@ UNSCALED_RESOLUTION="$( bc <<<"$UNSCALED_RESOLUTION_X / $SCALING_FACTOR" )x$( bc
 DISPLAYNUM=:`shuf -i 10000-99999999 -n 1`
 ESCAPED_PARAMS=`printf '%q ' "$@"`
 xpra start "$DISPLAYNUM" --xvfb="Xvfb +extension Composite -screen 0 ${UNSCALED_RESOLUTION}x24+32 -nolisten tcp -noreset  -auth \$XAUTHORITY" --env=GDK_SCALE=1 --env=GDK_DPI_SCALE=1 --start-child="$ESCAPED_PARAMS" --exit-with-children
-sleep "$SLEEPTIME"
+until xpra info "$DISPLAYNUM" >/dev/null 2>&1; do
+  sleep 0.1
+done
 xpra attach "$DISPLAYNUM" "--desktop-scaling=$SCALING_FACTOR" "--opengl=$USE_OPENGL" $PERFORMANCE_OPTIONS || xpra stop "$DISPLAYNUM"
