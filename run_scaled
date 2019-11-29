@@ -74,4 +74,4 @@ DISPLAYNUM=:`shuf -i 10000-99999999 -n 1`
 ESCAPED_PARAMS=`printf '%q ' "$@"`
 xpra start "$DISPLAYNUM" --xvfb="Xvfb +extension Composite -screen 0 ${UNSCALED_RESOLUTION}x24+32 -nolisten tcp -noreset  -auth \$XAUTHORITY" --env=GDK_SCALE=1 --env=GDK_DPI_SCALE=1 --start-child="$ESCAPED_PARAMS" --exit-with-children
 sleep "$SLEEPTIME"
-xpra attach "$DISPLAYNUM" "--desktop-scaling=$SCALING_FACTOR" "--opengl=$USE_OPENGL" $PERFORMANCE_OPTIONS || xpra stop "$DISPLAYNUM"
+GDK_SCALE=1 xpra attach "$DISPLAYNUM" "--desktop-scaling=$SCALING_FACTOR" "--opengl=$USE_OPENGL" $PERFORMANCE_OPTIONS || xpra stop "$DISPLAYNUM"
