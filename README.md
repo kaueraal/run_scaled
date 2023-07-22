@@ -1,3 +1,7 @@
+Xpra directly includes an equivalent tool since [version 4.1](https://github.com/Xpra-org/xpra/blob/4d73c3644d6692bd51376296ed913f18a809f1a9/docs/CHANGELOG.md#41-2021-02-26). It is also called `run_scaled` and is part of [the default Xpra installation](https://github.com/Xpra-org/xpra/blob/master/fs/bin/run_scaled).
+
+Hence, this script is deprecated and no longer maintained.
+
 # run_scaled
 
 Run an X application scaled via xpra.
